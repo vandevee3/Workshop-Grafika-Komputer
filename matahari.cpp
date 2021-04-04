@@ -1,4 +1,3 @@
-#define _USE_MATH_DEFINES
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -7,17 +6,18 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <cstdio>
 #include <cmath>
+
+#define PI 3.14
+
 using namespace glm;
 
 float duration = 0.02f;
-float prev_time = glfwGetTime();
+float prev = glfwGetTime();
 float time;
-float dt;
-float pos = 0;
-float newAngle = 0;
+float post = 0;
 bool clockwise = false;
-float earth_distancex = 34.5;
-float earth_distancey = 0.0;
+float jarakBumiX = 30.5;
+float jarakBumiY = 0.0;
 
 void setup_viewport(GLFWwindow* window)
 {
@@ -44,47 +44,47 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
         clockwise = true; // rotate clock wise
     else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
-        earth_distancex--; // lengthen earth distance
+        jarakBumiX--; // lengthen bumi distance
     else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
-        earth_distancex++; // shorten earth distance
+        jarakBumiX++; // shorten bumi distance
     else if (key == GLFW_KEY_R && action == GLFW_PRESS)
-        earth_distancex = 30.5; // reset earth distance
+        jarakBumiX = 30.5; // reset bumi distance
 }
 
-void changePos()
+void displacement()
 {
     time = glfwGetTime();
 
-    if ((time - prev_time) >= duration)
+    if ((time - prev) >= duration)
     {
         if (clockwise == false)
         {
-            if (pos < 359)
-                pos++;
+            if (post < 359)
+                post++;
             else
-                pos = 0;
-            prev_time = time;
+                post = 0;
+            prev = time;
         }
         else if (clockwise == true)
         {
-            if (pos > -359)
-                pos--;
+            if (post > -359)
+                post--;
             else
-                pos = 0;
-            prev_time = time;
+                post = 0;
+            prev = time;
 
         }
     }
 }
 
-void circle(float radius, int degree)
+void lingkaran(float radius, int degree)
 {
     glBegin(GL_POLYGON);
     int sudut, i;
     mat4 trans(1.0f);
     for (i = 0; i <= degree; i++)
     {
-        float sudut = i * (2 * M_PI / 360);
+        float sudut = i * (2 * PI / 360);
         float x = (radius)*cos(sudut);
         float y = (radius)*sin(sudut);
         vec4 point(x, y, 0.0f, 1.0f);
@@ -93,7 +93,7 @@ void circle(float radius, int degree)
     glEnd();
 }
 
-void triangle(float xstart, float ystart, float alas, float tinggi)
+void segitga(float xstart, float ystart, float alas, float tinggi)
 {
     glBegin(GL_TRIANGLES);
 
@@ -108,62 +108,67 @@ void triangle(float xstart, float ystart, float alas, float tinggi)
     glEnd();
 }
 
-void sun()
+void matahari()
 {
     glColor3ub(255, 255, 0);
-    circle(10.5, 360);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
-    triangle(0, 11.5, 5, 7);
-    glRotatef(36, 0.0f, 0.0f, 1.0f);
+    lingkaran(10.5, 360);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+    segitga(0, 11.5, 5, 7);
+    glRotatef(30, 0.0f, 0.0f, 1.0f);
+
 
     glLoadIdentity();
 }
 
-void earth(float x, float y)
+void bumi(float x, float y)
 {
     vec4 point(x, y, 0.0f, 1.0f);
     mat4 trans(1.0f);
-    trans = rotate(trans, radians(pos), vec3(0.0f, 0.0f, 1.0f));
+    trans = rotate(trans, radians(post), vec3(0.0f, 0.0f, 1.0f));
     point = trans * point;
     glTranslatef(point.x, point.y, 0.0f);
     glColor3ub(0, 0, 255);
-    circle(5, 360);
+    lingkaran(5, 360);
 }
 
-void moon()
+void bulan()
 {
     vec4 point(8.5, 0.0f, 0.0f, 1.0f);
     mat4 trans(1.0f);
-    trans = rotate(trans, radians(pos * 2), vec3(0.0f, 0.0f, 1.0f));
+    trans = rotate(trans, radians(post * 4), vec3(0.0f, 0.0f, 1.0f));
     point = trans * point;
     glTranslatef(point.x, point.y, 0.0f);
     glColor3ub(100, 100, 100);
-    circle(1.5, 360);
+    lingkaran(1.5, 360);
 }
 
-void display(int count)
+void display()
 {
-    changePos();
-    sun();
-    earth(earth_distancex, earth_distancey);
-    moon();
+    displacement();
+    matahari();
+    bumi(jarakBumiX, jarakBumiY);
+    bulan();
 }
 
 int main() {
@@ -171,7 +176,6 @@ int main() {
     if (!glfwInit())
         return EXIT_FAILURE;
 
-    // Membuat window
     window = glfwCreateWindow(640, 480, "Matahari, bumi, dan bulan", NULL, NULL);
 
     if (!window) {
@@ -193,7 +197,7 @@ int main() {
     while (!glfwWindowShouldClose(window))
     {
         setup_viewport(window);
-        display(12);
+        display();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
